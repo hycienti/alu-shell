@@ -1,0 +1,2 @@
+#!/bin/bash
+export PATH=$(echo "$PATH" | tr ':' '\n' | grep -v '^/action$' | tr '\n' ':' )/action
