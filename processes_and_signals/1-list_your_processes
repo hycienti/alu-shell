@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # This script displays a list of all currently running processes with process hierarchy
 
-ps -eo uid,command --sort=uid
+ps -ef --forest
+
 
