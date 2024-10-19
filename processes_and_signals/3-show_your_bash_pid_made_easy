@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# Show your Bash PID made easy
+for pid_path in /proc/[0-9]*; do
+    pid="${pid_path##*/}"
+    if [[ -r "$pid_path/comm" ]]; then
+        pname=$(<"$pid_path/comm")
+        if [[ "$pname" == *bash* ]]; then
+            echo "$pid: $pname"
+        fi
+    fi
+done
+
