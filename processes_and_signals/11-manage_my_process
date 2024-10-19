@@ -3,37 +3,31 @@
 # This script manages the manage_my_process script.
 # Usage: manage_my_process {start|stop|restart}
 
-PID_FILE="/var/run/my_process.pid"
-SCRIPT="/path/to/manage_my_process"  # Replace with the actual path to manage_my_process
+MANAGE_MY_PROCESS_SCRIPT="$(dirname "$0")/manage_my_process"
+PIDFILE="/var/run/my_process.pid"
 
 case "$1" in
     start)
-        if [ -f "$PID_FILE" ]; then
-            echo "manage_my_process is already running."
-        else
-            $SCRIPT &
-            echo $! > "$PID_FILE"
-            echo "manage_my_process started"
-        fi
+        nohup "$MANAGE_MY_PROCESS_SCRIPT" > /dev/null 2>&1 &
+        echo $! > "$PIDFILE"
+        echo "manage_my_process started"
         ;;
     stop)
-        if [ -f "$PID_FILE" ]; then
-            PID=$(cat "$PID_FILE")
-            kill "$PID"
-            rm -f "$PID_FILE"
-            echo "manage_my_process stopped"
-        else
-            echo "manage_my_process is not running."
+        if [ -f "$PIDFILE" ]; then
+            PID=$(cat "$PIDFILE")
+            kill "$PID" 2>/dev/null
+            rm -f "$PIDFILE"
         fi
+        echo "manage_my_process stopped"
         ;;
     restart)
-        if [ -f "$PID_FILE" ]; then
-            PID=$(cat "$PID_FILE")
-            kill "$PID"
-            rm -f "$PID_FILE"
+        if [ -f "$PIDFILE" ]; then
+            PID=$(cat "$PIDFILE")
+            kill "$PID" 2>/dev/null
+            rm -f "$PIDFILE"
         fi
-        $SCRIPT &
-        echo $! > "$PID_FILE"
+        nohup "$MANAGE_MY_PROCESS_SCRIPT" > /dev/null 2>&1 &
+        echo $! > "$PIDFILE"
         echo "manage_my_process restarted"
         ;;
     *)
