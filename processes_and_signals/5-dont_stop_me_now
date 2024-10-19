@@ -8,6 +8,5 @@ if [ ${#PIDS[@]} -eq 0 ]; then
     echo "No 4-to_infinity_and_beyond process found."
 else
     kill "${PIDS[@]}"
-    echo "Stopped 4-to_infinity_and_beyond process."
 fi
 
