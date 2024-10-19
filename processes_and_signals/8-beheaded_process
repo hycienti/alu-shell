@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# Script to kill the 7-highlander process
+
+# Find the PIDs of the 7-highlander process
+readarray -t PIDS < <(pgrep -f "7-highlander")
+
+if [ ${#PIDS[@]} -eq 0 ]; then
+    echo "No 7-highlander process found."
+else
+    # Send SIGKILL (signal 9) to the process(es)
+    kill -9 "${PIDS[@]}"
+fi
