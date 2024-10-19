@@ -1,20 +1,4 @@
 #!/usr/bin/env bash
-# This script displays a list of all currently running processes with process hierarchy
-ps -e -o user,pid,pcpu,pmem,vsz,rss,tty,stat,lstart,time,command --forest | \
-awk 'NR==1 {
-    # Change the header from "START" to "STARTED"
-    sub("START", "STARTED", $0);
-    print;
-}
-NR>1 {
-    # Combine the date and time fields from lstart
-    start_time = sprintf("%s %s %s %s %s", $9, $10, $11, $12, $13);
-    # Extract the time with seconds using the date command
-    cmd = "date -d \""start_time"\" \"+%H:%M:%S\"";
-    cmd | getline started_time;
-    close(cmd);
-    # Print the rest of the fields with the new started_time
-    printf "%-10s %5s %4s %4s %7s %5s %-8s %-5s %8s %6s ", $1, $2, $3, $4, $5, $6, $7, $8, started_time, $14;
-    for (i=15; i<=NF; i++) printf "%s ", $i;
-    print "";
-}
+# This script displays a list of all currently running processes with process hierary
+ps aux --forest
+
